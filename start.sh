@@ -33,14 +33,17 @@ fi
 
 # Clear Laravel caches (only after APP_KEY is set)
 if [ -n "$APP_KEY" ]; then
+    echo "Clearing Laravel caches..."
     php artisan config:clear || true
     php artisan cache:clear || true
     php artisan route:clear || true
     php artisan view:clear || true
     
-    # Optimize for production
+    # Optimize for production (skip route cache to avoid routing issues)
+    echo "Optimizing for production..."
     php artisan config:cache || true
-    php artisan route:cache || true
+    # Don't cache routes in production to avoid routing issues
+    # php artisan route:cache || true
     php artisan view:cache || true
 else
     echo "WARNING: APP_KEY is still not set. Some optimizations will be skipped."

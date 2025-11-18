@@ -30,13 +30,36 @@ class GaleriController extends Controller
                 ->orderBy('kategori_id', 'asc')
                 ->orderBy('created_at', 'desc')
                 ->get();
+            
             $kategoris = GaleriKategori::orderBy('nama')->get();
             $user = Auth::guard('web')->user();
             
             return view('galeri', compact('galeri', 'kategoris', 'user'));
         } catch (\Exception $e) {
             \Log::error('Error loading galeri page: ' . $e->getMessage());
-            return back()->with('error', 'Terjadi kesalahan saat memuat halaman galeri.');
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            // Return view with empty data instead of redirecting
+            // Use try-catch for each to prevent cascading errors
+            try {
+                $galeri = collect([]);
+            } catch (\Exception $e2) {
+                $galeri = collect([]);
+            }
+            
+            try {
+                $kategoris = GaleriKategori::orderBy('nama')->get();
+            } catch (\Exception $e2) {
+                $kategoris = collect([]);
+            }
+            
+            try {
+                $user = Auth::guard('web')->user();
+            } catch (\Exception $e2) {
+                $user = null;
+            }
+            
+            return view('galeri', compact('galeri', 'kategoris', 'user'))->with('error', 'Terjadi kesalahan saat memuat halaman galeri.');
         }
     }
 
