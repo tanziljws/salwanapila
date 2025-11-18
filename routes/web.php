@@ -103,9 +103,9 @@ Route::middleware(['admin.auth'])->group(function () {
     })->name('tentang');
     
     Route::get('/informasi', [App\Http\Controllers\InformasiController::class, 'index'])->name('informasi');
-    Route::put('/informasi/update', [App\Http\Controllers\InformasiController::class, 'updateInformasi'])->name('informasi.update');
+    Route::put('/informasi/update', [App\Http\Controllers\InformasiController::class, 'updateInformasi'])->name('admin.informasi.update');
     Route::put('/prestasi/update', [App\Http\Controllers\InformasiController::class, 'updatePrestasi'])->name('prestasi.update');
-    Route::put('/agenda/update', [App\Http\Controllers\InformasiController::class, 'updateAgenda'])->name('agenda.update');
+    Route::put('/agenda/update', [App\Http\Controllers\InformasiController::class, 'updateAgenda'])->name('admin.agenda.update');
     
     // Admin Users Management
     Route::get('/admin/users', [UserAuthController::class, 'adminIndex'])->name('admin.users');
