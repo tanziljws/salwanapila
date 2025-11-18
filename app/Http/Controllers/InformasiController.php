@@ -19,7 +19,29 @@ class InformasiController extends Controller
             return view('informasi', compact('jurusan', 'akreditasi', 'news'));
         } catch (\Exception $e) {
             \Log::error('Error loading informasi page: ' . $e->getMessage());
-            return back()->with('error', 'Terjadi kesalahan saat memuat halaman informasi.');
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            // Return view with empty data instead of redirecting
+            // Use try-catch for each to prevent cascading errors
+            try {
+                $jurusan = InformasiSekolah::getJurusan();
+            } catch (\Exception $e2) {
+                $jurusan = collect([]);
+            }
+            
+            try {
+                $akreditasi = InformasiSekolah::getAkreditasi();
+            } catch (\Exception $e2) {
+                $akreditasi = collect([]);
+            }
+            
+            try {
+                $news = News::where('status', 'published')->orderBy('tanggal', 'desc')->get();
+            } catch (\Exception $e2) {
+                $news = collect([]);
+            }
+            
+            return view('informasi', compact('jurusan', 'akreditasi', 'news'))->with('error', 'Terjadi kesalahan saat memuat halaman informasi.');
         }
     }
 
