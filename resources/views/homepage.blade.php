@@ -922,7 +922,7 @@
             <div class="container">
                 <a href="/" class="navbar-brand">
                     <div class="school-logo">
-                        <img src="{{ asset('images/logo_smk_new.png') }}?v={{ time() }}" alt="SMKN 4 Logo" class="logo-image">
+                        <img src="{{ asset('images/logo_smk_new.png') }}?v={{ time() }}" alt="SMKN 4 Logo" class="logo-image" loading="eager" width="45" height="45">
                     </div>
                     <div class="school-name">
                         <h1>SMKN 4</h1>
@@ -941,15 +941,12 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a href="/public/informasi" class="nav-link dropdown-toggle" id="infoDropdownToggle">
-                                Informasi
-                            </a>
+                            <a href="/public/informasi" class="nav-link" id="infoLink">Informasi <i class="fas fa-chevron-down ms-1" style="font-size: 0.7rem;"></i></a>
                             <ul class="dropdown-menu" id="infoDropdownMenu">
                                 <li><a class="dropdown-item" href="/public/informasi#jurusan">Jurusan</a></li>
                                 <li><a class="dropdown-item" href="/public/informasi#berita">Berita</a></li>
                                 <li><a class="dropdown-item" href="/public/informasi#agenda">Agenda</a></li>
                                 <li><a class="dropdown-item" href="/public/informasi#tentang">Tentang SMKN 4</a></li>
-
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -1062,7 +1059,7 @@
                 <div class="gallery-3d-carousel" id="gallery3DCarousel">
                     <div class="gallery-3d-item active" data-index="0">
                         <div class="gallery-3d-card">
-                            <img src="{{ asset('images/galeri1.JPG') }}?v={{ time() }}" alt="Galeri 1">
+                            <img src="{{ asset('images/galeri1.JPG') }}?v={{ time() }}" alt="Galeri 1" loading="lazy">
                             <div class="gallery-3d-caption">
                                 <h5>Kegiatan Siswa</h5>
                                 <p>Berbagai kegiatan pembelajaran dan ekstrakurikuler</p>
@@ -1071,7 +1068,7 @@
                     </div>
                     <div class="gallery-3d-item" data-index="1">
                         <div class="gallery-3d-card">
-                            <img src="{{ asset('images/galeri2.JPG') }}?v={{ time() }}" alt="Galeri 2">
+                            <img src="{{ asset('images/galeri2.JPG') }}?v={{ time() }}" alt="Galeri 2" loading="lazy">
                             <div class="gallery-3d-caption">
                                 <h5>Fasilitas Sekolah</h5>
                                 <p>Fasilitas modern dan lengkap</p>
@@ -1080,7 +1077,7 @@
                     </div>
                     <div class="gallery-3d-item" data-index="2">
                         <div class="gallery-3d-card">
-                            <img src="{{ asset('images/galeri3.JPG') }}?v={{ time() }}" alt="Galeri 3">
+                            <img src="{{ asset('images/galeri3.JPG') }}?v={{ time() }}" alt="Galeri 3" loading="lazy">
                             <div class="gallery-3d-caption">
                                 <h5>Prestasi Siswa</h5>
                                 <p>Berbagai prestasi dan pencapaian siswa</p>
@@ -1089,7 +1086,7 @@
                     </div>
                     <div class="gallery-3d-item" data-index="3">
                         <div class="gallery-3d-card">
-                            <img src="{{ asset('images/1757399234.jpg') }}?v={{ time() }}" alt="Galeri 4">
+                            <img src="{{ asset('images/1757399234.jpg') }}?v={{ time() }}" alt="Galeri 4" loading="lazy">
                             <div class="gallery-3d-caption">
                                 <h5>Kegiatan Ekstrakurikuler</h5>
                                 <p>Mengembangkan bakat siswa</p>
@@ -1098,7 +1095,7 @@
                     </div>
                     <div class="gallery-3d-item" data-index="4">
                         <div class="gallery-3d-card">
-                            <img src="{{ asset('images/1757399253.jpg') }}?v={{ time() }}" alt="Galeri 5">
+                            <img src="{{ asset('images/1757399253.jpg') }}?v={{ time() }}" alt="Galeri 5" loading="lazy">
                             <div class="gallery-3d-caption">
                                 <h5>Praktik Kejuruan</h5>
                                 <p>Praktik langsung sesuai jurusan</p>
@@ -1107,7 +1104,7 @@
                     </div>
                     <div class="gallery-3d-item" data-index="5">
                         <div class="gallery-3d-card">
-                            <img src="{{ asset('images/1757399275.jpg') }}?v={{ time() }}" alt="Galeri 6">
+                            <img src="{{ asset('images/1757399275.jpg') }}?v={{ time() }}" alt="Galeri 6" loading="lazy">
                             <div class="gallery-3d-caption">
                                 <h5>Lingkungan Sekolah</h5>
                                 <p>Suasana nyaman dan kondusif</p>
@@ -1261,21 +1258,28 @@ window.addEventListener('scroll', function() {
     handleScrollAnimation();
 });
 
-// Dropdown functionality
+// Dropdown functionality - show on hover, allow navigation on click
 document.addEventListener('DOMContentLoaded', function() {
-    const dropdownToggle = document.getElementById('infoDropdownToggle');
+    const infoLink = document.getElementById('infoLink');
     const dropdownMenu = document.getElementById('infoDropdownMenu');
+    const navItem = infoLink?.closest('.nav-item');
     
-    if (dropdownToggle && dropdownMenu) {
-        dropdownToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('show');
+    if (navItem && dropdownMenu) {
+        // Show dropdown on hover for desktop
+        navItem.addEventListener('mouseenter', function() {
+            dropdownMenu.classList.add('show');
         });
+        
+        navItem.addEventListener('mouseleave', function() {
+            dropdownMenu.classList.remove('show');
+        });
+        
+        // Allow normal navigation when clicking the link
+        // Dropdown items will navigate to their respective sections
         
         // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown')) {
+            if (!e.target.closest('.nav-item.dropdown')) {
                 dropdownMenu.classList.remove('show');
             }
         });

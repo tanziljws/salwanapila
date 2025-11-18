@@ -361,7 +361,7 @@
                         <div class="row g-4">
                             <div class="col-lg-6 col-md-6 mb-4">
                                 <div class="card h-100">
-                                    <img src="{{ asset('images/jurusan/pplg.jpeg') }}?v={{ time() }}" class="card-img-top" alt="PPLG" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" onerror="this.src='{{ asset('images/pplg.jpeg') }}'">
+                                    <img src="{{ asset('images/jurusan/pplg.jpeg') }}?v={{ time() }}" class="card-img-top" alt="PPLG" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" loading="lazy" onerror="this.src='{{ asset('images/pplg.jpeg') }}'">
                                     <div class="card-body">
                                         <h5 class="card-title" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">PPLG</h5>
                                         <p class="card-text" style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0;">Pengembangan Perangkat Lunak dan Gim</p>
@@ -370,7 +370,7 @@
                             </div>
                             <div class="col-lg-6 col-md-6 mb-4">
                                 <div class="card h-100">
-                                    <img src="{{ asset('images/jurusan/tkj.jpeg') }}?v={{ time() }}" class="card-img-top" alt="TKJ" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" onerror="this.src='{{ asset('images/tkj.jpeg') }}'">
+                                    <img src="{{ asset('images/jurusan/tkj.jpeg') }}?v={{ time() }}" class="card-img-top" alt="TKJ" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" loading="lazy" onerror="this.src='{{ asset('images/tkj.jpeg') }}'">
                                     <div class="card-body">
                                         <h5 class="card-title" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">TKJ</h5>
                                         <p class="card-text" style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0;">Teknik Komputer dan Jaringan</p>
@@ -379,7 +379,7 @@
                             </div>
                             <div class="col-lg-6 col-md-6 mb-4">
                                 <div class="card h-100">
-                                    <img src="{{ asset('images/jurusan/to.jpeg') }}?v={{ time() }}" class="card-img-top" alt="TO" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" onerror="this.src='{{ asset('images/to.jpeg') }}'">
+                                    <img src="{{ asset('images/jurusan/to.jpeg') }}?v={{ time() }}" class="card-img-top" alt="TO" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" loading="lazy" onerror="this.src='{{ asset('images/to.jpeg') }}'">
                                     <div class="card-body">
                                         <h5 class="card-title" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">TO</h5>
                                         <p class="card-text" style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0;">Teknik Otomotif</p>
@@ -388,7 +388,7 @@
                             </div>
                             <div class="col-lg-6 col-md-6 mb-4">
                                 <div class="card h-100">
-                                    <img src="{{ asset('images/jurusan/tpfl.jpeg') }}?v={{ time() }}" class="card-img-top" alt="TPFL" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" onerror="this.src='{{ asset('images/tpfl.jpeg') }}'">
+                                    <img src="{{ asset('images/jurusan/tpfl.jpeg') }}?v={{ time() }}" class="card-img-top" alt="TPFL" style="height: 200px; object-fit: contain; background-color: #f8f9fa; padding: 10px;" loading="lazy" onerror="this.src='{{ asset('images/tpfl.jpeg') }}'">
                                     <div class="card-body">
                                         <h5 class="card-title" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">TPFL</h5>
                                         <p class="card-text" style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0;">Teknik Pengelasan dan Fabrikasi Logam</p>

@@ -830,7 +830,7 @@
                                         $imageExists = file_exists(public_path($imagePath));
                                     @endphp
                                     <a href="{{ asset($imagePath) }}?v={{ optional($item->updated_at)->timestamp ?? time() }}" class="glightbox" data-gallery="gallery" data-title="{{ $item->judul }}" data-description="{{ $item->deskripsi }}" data-photo-id="{{ $item->id }}">
-                                        <img src="{{ $imageExists ? asset($imagePath) : asset('images/placeholder.jpg') }}?v={{ optional($item->updated_at)->timestamp ?? time() }}" class="card-img-top" alt="{{ $item->judul }}" style="height: 250px; object-fit: cover;" onerror="this.onerror=null; this.src='{{ asset('images/placeholder.jpg') }}'">
+                                        <img src="{{ $imageExists ? asset($imagePath) : asset('images/placeholder.jpg') }}?v={{ optional($item->updated_at)->timestamp ?? time() }}" class="card-img-top" alt="{{ $item->judul }}" style="height: 250px; object-fit: cover;" loading="lazy" onerror="this.onerror=null; this.src='{{ asset('images/placeholder.jpg') }}'">
                                     </a>
                                     @if($item->views > 0)
                                     <div class="position-absolute top-0 start-0 p-2">
