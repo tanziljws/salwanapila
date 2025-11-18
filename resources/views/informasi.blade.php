@@ -446,7 +446,8 @@
     </div>
     <div class="card-body">
         @php
-            $agendas = \App\Models\Agenda::orderBy('tanggal')->orderBy('id')->get();
+            // Use $agendas from controller, with fallback to empty collection
+            $agendas = $agendas ?? collect([]);
         @endphp
         
         @php
@@ -696,10 +697,11 @@
                             
                             <div class="agenda-items" id="agendaItems">
                                 @php
-                                    $agendas = \App\Models\Agenda::orderBy('tanggal')->orderBy('id')->get();
+                                    // Use $agendas from controller, with fallback to empty collection
+                                    $agendas = $agendas ?? collect([]);
                                 @endphp
                                 
-                                @if($agendas->count() > 0)
+                                @if(isset($agendas) && $agendas->count() > 0)
                                     @foreach($agendas as $index => $agenda)
                                         <div class="agenda-item mb-3 p-3 border rounded bg-light" data-index="{{ $index }}">
                                             <div class="row align-items-center">

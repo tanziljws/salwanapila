@@ -16,7 +16,15 @@ class InformasiController extends Controller
             $akreditasi = InformasiSekolah::getAkreditasi();
             $news = News::where('status', 'published')->orderBy('tanggal', 'desc')->get();
             
-            return view('informasi', compact('jurusan', 'akreditasi', 'news'));
+            // Get agendas
+            try {
+                $agendas = Agenda::orderBy('tanggal')->orderBy('id')->get();
+            } catch (\Exception $e) {
+                \Log::error('Error loading agendas: ' . $e->getMessage());
+                $agendas = collect([]);
+            }
+            
+            return view('informasi', compact('jurusan', 'akreditasi', 'news', 'agendas'));
         } catch (\Exception $e) {
             \Log::error('Error loading informasi page: ' . $e->getMessage());
             \Log::error('Stack trace: ' . $e->getTraceAsString());
@@ -41,7 +49,13 @@ class InformasiController extends Controller
                 $news = collect([]);
             }
             
-            return view('informasi', compact('jurusan', 'akreditasi', 'news'))->with('error', 'Terjadi kesalahan saat memuat halaman informasi.');
+            try {
+                $agendas = Agenda::orderBy('tanggal')->orderBy('id')->get();
+            } catch (\Exception $e2) {
+                $agendas = collect([]);
+            }
+            
+            return view('informasi', compact('jurusan', 'akreditasi', 'news', 'agendas'))->with('error', 'Terjadi kesalahan saat memuat halaman informasi.');
         }
     }
 
