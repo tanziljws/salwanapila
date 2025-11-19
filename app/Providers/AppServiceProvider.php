@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Force HTTPS URLs when behind a proxy (Railway, etc.)
+        // This ensures asset() generates HTTPS URLs
+        if (request()->isSecure() || config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
     }
 }
