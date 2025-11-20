@@ -9,6 +9,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ContentController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 // ==========================
 // HALAMAN UTAMA
@@ -148,5 +149,52 @@ Route::middleware(['admin.auth'])->group(function () {
         Route::delete('/news/{id}', [NewsController::class, 'destroy'])->name('news.destroy');
     });
 });
+
+// ==========================
+// DEBUG ROUTES (Hapus di production!)
+// ==========================
+
+// Test database connection
+Route::get('/test-db', function() {
+    try {
+        $pdo = DB::connection()->getPdo();
+        $dbName = DB::connection()->getDatabaseName();
+        
+        // Test query
+        $result = DB::select('SELECT 1 as test');
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database connected successfully!',
+            'database' => $dbName,
+            'connection' => config('database.default'),
+            'host' => config('database.connections.mysql.host'),
+            'port' => config('database.connections.mysql.port'),
+            'test_query' => $result[0]->test ?? null,
+        ], 200);
+    } catch (\Illuminate\Database\QueryException $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Database connection failed!',
+            'error' => $e->getMessage(),
+            'error_code' => $e->getCode(),
+            'config' => [
+                'connection' => config('database.default'),
+                'host' => config('database.connections.mysql.host'),
+                'port' => config('database.connections.mysql.port'),
+                'database' => config('database.connections.mysql.database'),
+                'username' => config('database.connections.mysql.username'),
+                'password_set' => !empty(config('database.connections.mysql.password')),
+            ],
+            'hint' => 'Check Railway dashboard: Database service status, Environment variables (DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD)',
+        ], 500);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unexpected error!',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+})->name('test.db');
 
 

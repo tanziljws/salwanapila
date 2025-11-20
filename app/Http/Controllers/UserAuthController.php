@@ -84,14 +84,29 @@ class UserAuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::guard('web')->attempt($credentials, $request->remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/')->with('success', 'Login berhasil!');
-        }
+        try {
+            if (Auth::guard('web')->attempt($credentials, $request->remember)) {
+                $request->session()->regenerate();
+                return redirect()->intended('/')->with('success', 'Login berhasil!');
+            }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ])->onlyInput('email');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Database connection error
+            \Log::error('Database connection error during login: ' . $e->getMessage());
+            
+            return back()->withErrors([
+                'email' => 'Sistem sedang mengalami masalah koneksi database. Silakan coba lagi beberapa saat lagi atau hubungi administrator.',
+            ])->onlyInput('email');
+        } catch (\Exception $e) {
+            \Log::error('Unexpected error during login: ' . $e->getMessage());
+            
+            return back()->withErrors([
+                'email' => 'Terjadi kesalahan saat proses login. Silakan coba lagi.',
+            ])->onlyInput('email');
+        }
     }
 
     // Handle logout

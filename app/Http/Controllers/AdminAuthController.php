@@ -27,33 +27,48 @@ class AdminAuthController extends Controller
 
         $credentials = $request->only('username', 'password');
 
-        // Check admin status before attempting login
-        $admin = Admin::where('username', $credentials['username'])->first();
-        
-        if ($admin && !$admin->is_active) {
+        try {
+            // Check admin status before attempting login
+            $admin = Admin::where('username', $credentials['username'])->first();
+            
+            if ($admin && !$admin->is_active) {
+                return back()->withErrors([
+                    'username' => 'Akun Anda telah dinonaktifkan. Silakan hubungi administrator.',
+                ])->withInput($request->only('username'));
+            }
+
+            if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+                $request->session()->regenerate();
+                
+                // Update last login
+                $admin = Auth::guard('admin')->user();
+                $admin->update(['last_login' => now()]);
+                
+                // Set session data untuk admin
+                $request->session()->put('admin_id', Auth::guard('admin')->id());
+                $request->session()->put('admin_name', Auth::guard('admin')->user()->username);
+                $request->session()->put('admin_authenticated', true);
+                
+                return redirect()->intended('/dashboard')->with('success', 'Selamat datang, Admin! Berikut adalah statistik sekolah dan aksi cepat untuk mengelola konten.');
+            }
+
             return back()->withErrors([
-                'username' => 'Akun Anda telah dinonaktifkan. Silakan hubungi administrator.',
+                'username' => 'Username atau password salah.',
+            ])->withInput($request->only('username'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Database connection error
+            \Log::error('Database connection error during admin login: ' . $e->getMessage());
+            
+            return back()->withErrors([
+                'username' => 'Sistem sedang mengalami masalah koneksi database. Silakan cek konfigurasi database di Railway atau hubungi administrator.',
+            ])->withInput($request->only('username'));
+        } catch (\Exception $e) {
+            \Log::error('Unexpected error during admin login: ' . $e->getMessage());
+            
+            return back()->withErrors([
+                'username' => 'Terjadi kesalahan saat proses login. Silakan coba lagi.',
             ])->withInput($request->only('username'));
         }
-
-        if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            
-            // Update last login
-            $admin = Auth::guard('admin')->user();
-            $admin->update(['last_login' => now()]);
-            
-            // Set session data untuk admin
-            $request->session()->put('admin_id', Auth::guard('admin')->id());
-            $request->session()->put('admin_name', Auth::guard('admin')->user()->username);
-            $request->session()->put('admin_authenticated', true);
-            
-            return redirect()->intended('/dashboard')->with('success', 'Selamat datang, Admin! Berikut adalah statistik sekolah dan aksi cepat untuk mengelola konten.');
-        }
-
-        return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->withInput($request->only('username'));
     }
 
     public function logout(Request $request)
