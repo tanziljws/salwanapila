@@ -14,6 +14,12 @@ DB_USERNAME=root
 DB_PASSWORD=dRnoMwEJjgKoaKOIeOdLFljYriEByjTs
 ```
 
+**Test Connection:**
+```bash
+mysql -h interchange.proxy.rlwy.net -u root -p --port 21355 --protocol=TCP railway
+# Password: dRnoMwEJjgKoaKOIeOdLFljYriEByjTs
+```
+
 ### Application Configuration (jika belum ada)
 ```
 APP_NAME="SMKN 4 Website"
